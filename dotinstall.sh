@@ -1,31 +1,24 @@
 #!/bin/bash
 
-install_yay() {
-    if ! command -v yay &> /dev/null; then
-        echo "yay is not installed. Installing yay..."
-        sudo pacman -S --noconfirm base-devel git
-        git clone https://aur.archlinux.org/yay.git
-        cd yay
-        makepkg -si --noconfirm
-        cd ..
-        rm -rf yay
-    else
-        echo "yay is already installed."
-    fi
-}
+# Check for apt and install it if necessary
+if ! command -v apt &> /dev/null; then
+    echo "apt could not be found. Please install apt first."
+    exit 1
+else
+    echo "apt is available."
+fi
 
-install_yay
-
+# Declare an associative array for software installation commands
 declare -A SOFTWARE_INSTALL=(
-    ["nvim"]="yay -S --noconfirm neovim"
-    ["i3"]="yay -S --noconfirm i3"
-    ["kitty"]="yay -S --noconfirm kitty"
-    ["rofi"]="yay -S --noconfirm rofi"
-    ["polybar"]="yay -S --noconfirm polybar"
-    ["zsh"]="yay -S --noconfirm zsh"
-    ["pywal"]="yay -S --noconfirm python-pywal"  
-    ["dunst"]="yay -S --noconfirm dunst"  
-    ["feh"]="yay -S --noconfirm feh"  
+    ["nvim"]="sudo apt install -y neovim"
+    ["i3"]="sudo apt install -y i3"
+    ["kitty"]="sudo apt install -y kitty"
+    ["rofi"]="sudo apt install -y rofi"
+    ["polybar"]="sudo apt install -y polybar"
+    ["zsh"]="sudo apt install -y zsh"
+    ["pywal"]="sudo apt install -y python3-pywal"
+    ["dunst"]="sudo apt install -y dunst"
+    ["feh"]="sudo apt install -y feh"
 )
 
 install_software() {
@@ -38,8 +31,10 @@ install_software() {
     fi
 }
 
-SOFTWARE=("nvim" "i3" "kitty" "rofi" "polybar" "zsh" "pywal" "dunst" "feh")   
+# List of software to install
+SOFTWARE=("nvim" "i3" "kitty" "rofi" "polybar" "zsh" "pywal" "dunst" "feh")
 
+# Install each software in the list
 for software in "${SOFTWARE[@]}"; do
     install_software "$software"
 done
