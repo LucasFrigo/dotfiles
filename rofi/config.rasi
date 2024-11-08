@@ -1,3 +1,1 @@
-configuration{
-    theme: "~/.cache/wal/colors-rofi-dark";
-}
+@theme "/usr/share/rofi/themes/gruvbox-dark.rasi"
